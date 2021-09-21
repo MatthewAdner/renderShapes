@@ -1,4 +1,3 @@
-from typing import final
 from shapes import *
 from shapeProcessing import *
 from cmu_graphics import *
@@ -20,7 +19,7 @@ shapes = [cube]
 finalList = []
 colorList = []
 
-# list of faces that needs to be renderd
+# list of faces that need to be renderd
 faceList = []
 
 # list of distances
@@ -42,7 +41,6 @@ finalList.append(newShape(cube, 0.2,2,8,100,300,0))
 finalList.append(newShape(cube, 2,1,.4,0,180,100))
 finalList.append(newShape(diamond4,0.7,1.2,0.7,300,300,200))
 finalList.append(newShape(verySquishedDiamond4,0.7,1.2,0.2,100,100,400))
-#finalList.append()
 
 for c in range(30):
     colorList.append([randint(0,255),randint(0,255),randint(0,255)])
