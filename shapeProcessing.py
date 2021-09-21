@@ -27,6 +27,30 @@ dist = distFinder(cent1,cent2)
 print(dist)
 '''
 
+def resize(faceList,x,y,z):
+    resized = []
+    for face in faceList:
+        newFace = []
+        for point in face:
+            newFace.append([point[0]*x,point[1]*y,point[2]*z])
+        resized.append(newFace)
+    return(resized)
+
+def translate(faceList,x,y,z):
+    moved = []
+    for face in faceList:
+        newFace = []
+        for point in face:
+            newFace.append([point[0]+x,point[1]+y,point[2]+z])
+        moved.append(newFace)
+    return(moved)
+            
+def newShape(source,xSize,ySize,zSize,xMove,yMove,zMove):
+    temp = source
+    temp = resize(temp,xSize,ySize,zSize)
+    temp = translate(temp,xMove,yMove,zMove)
+    faceList = temp
+    return(faceList)
 
 
 

@@ -1,15 +1,24 @@
+from typing import final
 from shapes import *
 from shapeProcessing import *
 from cmu_graphics import *
+from random import randint
+
+# FUTURE IDEAS FOR THIS
+#   shading
+#   rotatable objects
+
+
 # light
 lightSource=[600,-300,-200]
 # view
-camPos=[200,200,-400]
+camPos=[250,250,-600]
 
 screen = [[0,0,0], [400,0,0], [400,400,0], [0,400,0]]
 
 shapes = [cube]
-
+finalList = []
+colorList = []
 
 # list of faces that needs to be renderd
 faceList = []
@@ -18,26 +27,58 @@ faceList = []
 distList = []
 
 # puts faces in faceList
-for shape in shapes:
+'''for shape in shapes:
     for face in shape:
         faceList.append(face)
 
+faceList = resize(faceList, .2,2.2,1.75)
+faceList = translate(faceList, 100,100,0)'''
+'''faceList = newShape(cube, 0.2,2,8,100,300,0)
+faceList2 = newShape(cube, 2,1,.4,0,180,100)
+finalList.append(faceList)
+finalList.append(faceList2)'''
+
+finalList.append(newShape(cube, 0.2,2,8,100,300,0))
+finalList.append(newShape(cube, 2,1,.4,0,180,100))
+finalList.append(newShape(diamond4,0.7,1.2,0.7,300,300,200))
+finalList.append(newShape(verySquishedDiamond4,0.7,1.2,0.2,100,100,400))
+#finalList.append()
+
+for c in range(30):
+    colorList.append([randint(0,255),randint(0,255),randint(0,255)])
+
+'''
+print(faceList,'\n\n\n\n')
+print(temp)
+'''
+
+
 # adds the center point to the end of each coordinate
-for face in range(len(faceList)):
-    faceList[face].append(centFinder(faceList[face]))
+for faceList in range(len(finalList)):
+    for face in range(len(finalList[faceList])):
+        finalList[faceList][face].append(centFinder(finalList[faceList][face]))
+print(finalList,'\n\n') # this one's ballin!
 
 # adds the distance from the point to the camera of each face to distList    
-for face in range(len(faceList)):
-    distList.append(distFinder(faceList[face][-1], camPos))
-
+for faceList in range(len(finalList)):
+    for face in range(len(finalList[faceList])):
+        distList.append(distFinder(finalList[faceList][face][-1], camPos))
+print(len(finalList[0]),len(finalList[1])) # ballin
+print(len(distList))
 # zipps distList and faceList together so facelist and can be sorted with distList
-zipped = list(zip(distList, faceList))
+superFinalList = []
+for e in finalList:
+    for a in e:
+        superFinalList.append(a)
+
+zipped = zip(distList, superFinalList)
+lZipped = list(zipped)
 
 # sorts the zipped lists. Since distList comes first in the tuples, that is what it is sorted by
-zipped.sort()
+lZipped.sort()
 
 # unzips the lists and puts them into their former lists homes, this time in order
-distList, faceList = zip(*zipped)
+distList, faceList = zip(*lZipped)
 for face in range(len(faceList)):
     faceList[face].pop()
 
@@ -68,11 +109,11 @@ for face in faceList:
     for point in face:
         face2d.append(projector(point, camPos, 0))
     renderFaces.append(face2d)
-
+renderFaces.reverse()
 
 # did you know that you can pass the values from a list into a function by writing the list as *listName instead of listName COOL right?
 
-print(renderFaces)
+#print(renderFaces)
 renderPoly = []
 for face in renderFaces:
     temp = []
@@ -80,10 +121,17 @@ for face in renderFaces:
         for num in point:
             temp.append(num)
     renderPoly.append(temp)
+k = 0
+
+# render background
+Rect(0,0,400,400,fill=gradient(rgb(200,240,255),rgb(160,210,235),start='center'))
+
 
 # final rendering of cube
 for poly in renderPoly:
-    Polygon(*poly,fill=None,border='purple')
+    Polygon(*poly,fill=rgb(*(colorList[k%len(colorList)])),border='black',opacity=70, borderWidth = .5)
+    k += 1
+    #rgb(*(colorList[k%len(colorList)]))
 #Polygon(*renderPoly[1],fill=None,border='purple')
 
 #print('\n\n\n', renderPoly)
@@ -131,11 +179,4 @@ def angleFinder():
     angle = 'an angle'
     return angle
 
-
-
-def flatCoordFinder(coord):
-    # field of view (FOV) will be 90 degrees
-    # camera will be located at 200,200,-200
-    fCoord='2d coordinate'
-    return fCoord
 
