@@ -1,5 +1,6 @@
 from cmu_graphics import *
 from random import randint
+#github is https://github.com/MatthewAdner/renderShapes
 
 # shapes (this is from shapes.py)
 cube=[
@@ -126,14 +127,12 @@ for c in range(30):
 for faceList in range(len(finalList)):
     for face in range(len(finalList[faceList])):
         finalList[faceList][face].append(centFinder(finalList[faceList][face]))
-print(finalList,'\n\n') # this one's ballin!
 
 # adds the distance from the point to the camera of each face to distList    
 for faceList in range(len(finalList)):
     for face in range(len(finalList[faceList])):
         distList.append(distFinder(finalList[faceList][face][-1], camPos))
-print(len(finalList[0]),len(finalList[1])) # ballin
-print(len(distList))
+
 # zipps distList and faceList together so facelist and can be sorted with distList
 superFinalList = []
 for e in finalList:
@@ -169,6 +168,7 @@ for face in faceList:
 renderFaces.reverse()
 
 renderPoly = []
+
 for face in renderFaces:
     temp = []
     for point in face:
